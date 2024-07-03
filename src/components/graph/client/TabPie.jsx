@@ -71,7 +71,7 @@ export function TabPie() {
           Spending vs Budget
         </TabsTrigger>
       </TabsList>
-      <Card className='dark:bg-black'>
+      <Card className='dark:bg-black p-2'>
         <TabsContent value='account'>
           <ResponsiveContainer width='100%' height={300}>
             <PieChart>
