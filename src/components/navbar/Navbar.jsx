@@ -15,7 +15,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+} from '@/components/ui/alert-dialog';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -70,6 +70,10 @@ const Navbar = () => {
                 Welcome, {user.name}
               </span>
               <AlertDialog>
+                <Link to='/dashboard/lobby'>
+                  <Button className='font-medium'>Dashboard</Button>
+                </Link>
+
                 <AlertDialogTrigger asChild>
                   <Button variant='outline' className='font-medium'>
                     Logout
@@ -77,14 +81,20 @@ const Navbar = () => {
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
-                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                    <AlertDialogTitle>
+                      Are you absolutely sure?
+                    </AlertDialogTitle>
                     <AlertDialogDescription>
                       This action will log you out of your account.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
-                    <AlertDialogCancel className='text-white'>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={logout}>Logout</AlertDialogAction>
+                    <AlertDialogCancel className='text-white'>
+                      Cancel
+                    </AlertDialogCancel>
+                    <AlertDialogAction onClick={logout}>
+                      Logout
+                    </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>
@@ -97,9 +107,7 @@ const Navbar = () => {
                 </Button>
               </Link>
               <Link to='/signup'>
-                <Button className='font-medium'>
-                  Sign up
-                </Button>
+                <Button className='font-medium'>Sign up</Button>
               </Link>
             </>
           )}
@@ -138,31 +146,46 @@ const Navbar = () => {
                 Contact
               </Link>
               {user ? (
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button variant='outline' className='font-medium'>
-                      Logout
-                    </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        This action will log you out of your account.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction onClick={logout}>Logout</AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
+                <>
+                  <Link to='/dashboard/lobby'>
+                    <p className='font-medium'>Dashboard</p>
+                  </Link>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button variant='outline' className='font-medium'>
+                        Logout
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          Are you absolutely sure?
+                        </AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This action will log you out of your account.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction onClick={logout}>
+                          Logout
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </>
               ) : (
                 <>
-                  <Link to='/signin' className='hover:underline hover:underline-offset-4'>
+                  <Link
+                    to='/signin'
+                    className='hover:underline hover:underline-offset-4'
+                  >
                     Sign in
                   </Link>
-                  <Link to='/signup' className='hover:underline hover:underline-offset-4'>
+                  <Link
+                    to='/signup'
+                    className='hover:underline hover:underline-offset-4'
+                  >
                     Sign up
                   </Link>
                 </>
