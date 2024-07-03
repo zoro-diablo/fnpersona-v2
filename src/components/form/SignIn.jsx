@@ -4,7 +4,7 @@ import { Label } from '@/components/CustomInput/Label';
 import { Input } from '@/components/CustomInput/Input';
 import svg from '../../assets/placeholder.svg';
 import { GoogleLogin } from '@react-oauth/google';
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { useAuth } from '@/context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import Loader from '../loader/Loader';
@@ -48,7 +48,7 @@ export function SignIn() {
       setEmailError('Please enter a valid email address.');
       toast({
         variant: 'destructive',
-        title: 'Invalid Email ',
+        title: 'Invalid Email',
         description: 'Please enter a valid email address.',
       });
       return false;
@@ -83,9 +83,9 @@ export function SignIn() {
   };
 
   return (
-    <div className='w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]'>
-      <div className='flex items-center justify-center py-12 '>
-        <form className='mx-auto grid w-[350px] gap-6 ' onSubmit={handleSubmit}>
+    <div className='w-full flex flex-col lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]'>
+      <div className='flex items-center justify-center py-12 w-full'>
+        <form className='mx-auto grid w-full max-w-[350px] gap-6 p-4' onSubmit={handleSubmit}>
           <div className='grid gap-2 text-center'>
             <h1 className='text-3xl font-semibold'>Login</h1>
             <p className='text-balance text-muted-foreground'>
@@ -105,10 +105,6 @@ export function SignIn() {
                   onChange={(e) => setEmail(e.target.value)}
                   onBlur={() => validateEmail(email)}
                 />
-                {/* {emailError && (
-                  <p className='text-red-500 text-sm' 
-                  >{emailError}</p>
-                )} */}
               </LabelInputContainer>
             </div>
             <div className='grid gap-2'>
@@ -129,9 +125,6 @@ export function SignIn() {
                 onChange={(e) => setPassword(e.target.value)}
                 onBlur={() => validatePassword(password)}
               />
-              {/* {passwordError && (
-                <p className='text-red-500 text-sm'>{passwordError}</p>
-              )} */}
             </div>
             {loading && <Loader />}
             <button
@@ -155,7 +148,7 @@ export function SignIn() {
           </div>
         </form>
       </div>
-      <div className='hidden bg-muted lg:block'>
+      <div className='hidden lg:block bg-muted'>
         <img
           src={svg}
           alt='Image'

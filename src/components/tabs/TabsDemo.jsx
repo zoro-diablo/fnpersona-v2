@@ -110,7 +110,7 @@ const DummyContent = () => {
       alt='dummy image'
       width='1000'
       height='1000'
-      className='object-cover object-left-top h-[60%] md:h-[90%] absolute -bottom-10 inset-x-0 w-[90%] rounded-xl mx-auto'
+      className='object-cover object-left-top h-[85%] md:h-[90%] absolute -bottom-10 inset-x-0 w-[90%] rounded-xl mx-auto'
     />
   );
 };
@@ -121,7 +121,7 @@ const DummyContentTwo = () => {
       alt='dummy image'
       width='1000'
       height='1000'
-      className='object-cover object-left-top h-[60%] md:h-[90%] absolute -bottom-10 inset-x-0 w-[90%] rounded-xl mx-auto'
+      className='object-cover object-left-top h-[85%] md:h-[90%] absolute -bottom-10 inset-x-0 w-[90%] rounded-xl mx-auto'
     />
   );
 };
@@ -132,7 +132,7 @@ const DummyContentThree = () => {
       alt='dummy image'
       width='1000'
       height='1000'
-      className='object-cover object-left-top h-[60%] md:h-[90%] absolute -bottom-10 inset-x-0 w-[90%] rounded-xl mx-auto'
+      className='object-cover object-left-top h-[85%] md:h-[90%] absolute -bottom-10 inset-x-0 w-[90%] rounded-xl mx-auto'
     />
   );
 };
@@ -143,7 +143,7 @@ const DummyContentFour = () => {
       alt='dummy image'
       width='1000'
       height='1000'
-      className='object-cover object-left-top h-[60%] md:h-[90%] absolute -bottom-10 inset-x-0 w-[90%] rounded-xl mx-auto'
+      className='object-cover object-left-top h-[85%] md:h-[90%] absolute -bottom-10 inset-x-0 w-[90%] rounded-xl mx-auto'
     />
   );
 };
