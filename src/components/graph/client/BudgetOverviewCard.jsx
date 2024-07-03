@@ -9,9 +9,11 @@ import {
 import {
   Card,
   CardContent,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { FaEyeSlash, FaToolbox, FaTrafficLight } from 'react-icons/fa';
 
 const revenueData = [
   { name: 'Page A', revenue: 4000, subscription: 2400 },
@@ -58,7 +60,7 @@ function BudgetOverviewCard() {
           <span className='text-red-500 font-semibold'>- 9.1%</span> last
           month
         </p>
-        <div className='mt-4 h-[150px]'>
+        <div className='mt-4 h-[120px]'>
           <ResponsiveContainer width='100%' height='70%'>
             <BarChart data={revenueData}>
               <Tooltip content={<CustomTooltip />} />
@@ -67,6 +69,13 @@ function BudgetOverviewCard() {
           </ResponsiveContainer>
         </div>
       </CardContent>
+        <CardFooter>
+          <div className='flex w-full justify-end gap-2'>
+            <FaToolbox className='text-gray-500' />
+            <FaEyeSlash className='text-gray-500' />
+            <FaTrafficLight className='text-gray-500' />
+          </div>
+        </CardFooter>
     </Card>
   );
 }

@@ -54,3 +54,15 @@
   display: none;
 }
 
+.activebutton{
+  color: #b7b7b7;
+}
+
+.active .activebutton{
+  color: gray;
+  background-color:#18191a;
+  height: 35px;
+  width: 35px;
+  padding: 6px;
+  border-radius: 100%;
+}

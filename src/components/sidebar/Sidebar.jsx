@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import {
   Home,
   ShoppingCart,
@@ -6,6 +6,12 @@ import {
   Users2,
   LineChart,
   Settings,
+  GoalIcon,
+  CoinsIcon,
+  DollarSign,
+  Wallet,
+  Calendar,
+  BriefcaseBusinessIcon,
 } from 'lucide-react';
 import {
   Tooltip,
@@ -13,91 +19,106 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import logo from '../../assets/logo.svg'
 
 function Sidebar() {
   return (
     <aside className='fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r dark:border-[#555555] dark:bg-black bg-background sm:flex'>
       <TooltipProvider>
         <nav className='flex flex-col items-center gap-4 px-2 sm:py-5'>
-          <Link
-            href='#'
-            className='group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base'
+          <NavLink
+            to='/'
+            className='group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base bg-white shadow-md '
           >
-            <Package className='h-8 p-1 rounded-full  w-8 transition-all group-hover:scale-110 dark:text-black dark:bg-white ' />
-            <span className='sr-only'>Acme Inc</span>
-          </Link>
+            <img src={logo}
+              className={`h-6 p-1  w-8 transition-all group-hover:scale-110 `}
+            />
+            <span className='sr-only'>FnPersona</span>
+          </NavLink>
 
           <Tooltip>
             <TooltipTrigger asChild>
-              <Link
-                href='#'
+              <NavLink
+                to='/dashboard/lobby'
                 className='flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'
               >
-                <Home className='h-5 w-5 dark:text-white/50' />
+                <Home className='h-5 w-5  activebutton' />
                 <span className='sr-only'>Dashboard</span>
-              </Link>
+              </NavLink>
             </TooltipTrigger>
             <TooltipContent side='right'>Dashboard</TooltipContent>
           </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Link
-                href='#'
+              <NavLink
+                to='/dashboard/networth'
                 className='flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8'
               >
-                <ShoppingCart className='h-5 w-5 dark:text-white/50' />
-                <span className='sr-only'>Orders</span>
-              </Link>
+                <Wallet className='h-5 w-5  activebutton' />
+                <span className='sr-only'>Net Worth</span>
+              </NavLink>
             </TooltipTrigger>
-            <TooltipContent side='right'>Orders</TooltipContent>
+            <TooltipContent side='right'>Net Worth</TooltipContent>
           </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Link
-                href='#'
+              <NavLink
+                to='/dashboard/budget'
                 className='flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'
               >
-                <Package className='h-5 w-5 dark:text-white/50' />
-                <span className='sr-only'>Products</span>
-              </Link>
+                <DollarSign className='h-5 w-5 activebutton' />
+                <span className='sr-only'>Budget</span>
+              </NavLink>
             </TooltipTrigger>
-            <TooltipContent side='right'>Products</TooltipContent>
+            <TooltipContent side='right'>Budget</TooltipContent>
           </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Link
-                href='#'
+              <NavLink
+                to='/dashboard/goal'
                 className='flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'
               >
-                <Users2 className='h-5 w-5 dark:text-white/50' />
-                <span className='sr-only'>Customers</span>
-              </Link>
+                <GoalIcon className='h-5 w-5 activebutton' />
+                <span className='sr-only'>Goal</span>
+              </NavLink>
             </TooltipTrigger>
-            <TooltipContent side='right'>Customers</TooltipContent>
+            <TooltipContent side='right'>Goal</TooltipContent>
           </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Link
-                href='#'
+              <NavLink
+                to='/dashboard/investments'
                 className='flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'
               >
-                <LineChart className='h-5 w-5 dark:text-white/50' />
-                <span className='sr-only'>Analytics</span>
-              </Link>
+                <BriefcaseBusinessIcon className='h-5 w-5 activebutton' />
+                <span className='sr-only'>Investments</span>
+              </NavLink>
             </TooltipTrigger>
-            <TooltipContent side='right'>Analytics</TooltipContent>
+            <TooltipContent side='right'>Investments</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <NavLink
+                to='/dashboard/recurring'
+                className='flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'
+              >
+                <Calendar className='h-5 w-5 activebutton' />
+                <span className='sr-only'>Recurring Expenses</span>
+              </NavLink>
+            </TooltipTrigger>
+            <TooltipContent side='right'>Recurring Expenses</TooltipContent>
           </Tooltip>
         </nav>
         <nav className='mt-auto flex flex-col items-center gap-4 px-2 sm:py-5'>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Link
-                href='#'
+              <NavLink
+                to='/dashboard/settings'
                 className='flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'
               >
-                <Settings className='h-5 w-5 dark:text-white/50' />
+                <Settings className='h-5 w-5 activebutton' />
                 <span className='sr-only'>Settings</span>
-              </Link>
+              </NavLink>
             </TooltipTrigger>
             <TooltipContent side='right'>Settings</TooltipContent>
           </Tooltip>

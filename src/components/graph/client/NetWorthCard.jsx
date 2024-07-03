@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FaMoneyBill } from 'react-icons/fa';
+import { FaEyeSlash, FaMoneyBill, FaToolbox, FaTrafficLight } from 'react-icons/fa';
 import {
   LineChart,
   Line,
@@ -9,6 +9,7 @@ import {
 import {
   Card,
   CardContent,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
@@ -53,12 +54,12 @@ function NetWorthCard() {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className='text-4xl font-bold'>$15,231.89</div>
+        <div className='text-4xl font-bold flex flex-col h-full '>$15,231.89</div>
         <p className='text-[13px] font-medium text-muted-foreground dark:text-white/50'>
           <span className='text-emerald-500 font-semibold'>+20.1%</span> last
           month
         </p>
-        <div className='h-[150px] my-4'>
+        <div className='h-[120px] mt-4'>
           <ResponsiveContainer width='100%' height='100%'>
             <LineChart
               data={revenueData}
@@ -79,6 +80,13 @@ function NetWorthCard() {
           </ResponsiveContainer>
         </div>
       </CardContent>
+      <CardFooter>
+          <div className='flex w-full justify-end gap-2'>
+            <FaToolbox className='text-gray-500' />
+            <FaEyeSlash className='text-gray-500' />
+            <FaTrafficLight className='text-gray-500' />
+          </div>
+        </CardFooter>
     </Card>
   );
 }

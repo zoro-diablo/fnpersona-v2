@@ -4,29 +4,31 @@ import Goals from '@/components/cards/Goals';
 import NetWorthCard from '@/components/graph/client/NetWorthCard';
 import BudgetOverviewCard from '@/components/graph/client/BudgetOverviewCard';
 import { Overview } from '@/components/graph/client/Overview';
+import Notification from '@/components/cards/Notification';
 
 const Lobby = () => {
   return (
-    <div className='h-[89vh] overflow-hidden grid grid-cols-4 gap-3'>
-      <div className='col-span-3'>
-        <div className='flex-1 overflow-y-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3'>
-          <div className='col-span-3'>
-            <div className='grid grid-cols-4 gap-3'>
+    <div className='xl:overflow-hidden md:overflow-auto grid md:grid-cols-2 xl:grid-cols-4 gap-3'>
+      <div className='md:col-span-2 xl:col-span-3 '>
+        <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3'>
+          <div className='md:col-span-2 xl:col-span-3'>
+            <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3'>
               <NetWorthCard />
               <BudgetOverviewCard />
-              <div className='col-span-2'>
+              <div className='md:col-span-2 xl:col-span-2'>
                 <Goals />
               </div>
             </div>
           </div>
-          <div className='col-span-2'>
+          <div className='md:col-span-2 xl:col-span-2 '>
             <Overview />
           </div>
+          <Notification />
         </div>
       </div>
-      <div>
-        <TabPie className='col-span-4 row-span-2' />
-        <UpcomingExp className='row-span-2 col-span-1 md:col-span-2 lg:col-span-3' />
+      <div className='grid md:grid-cols-1 '>
+        <TabPie />
+        <UpcomingExp />
       </div>
     </div>
   );

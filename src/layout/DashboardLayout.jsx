@@ -4,12 +4,12 @@ import TopNavbar from '@/components/navbar/TopNavbar';
 
 function DashboardLayout() {
   return (
-    <div className="flex min-h-screen w-full flex-col sm:flex-row bg-muted/40">
+    <div className='flex min-h-screen w-full flex-col sm:flex-row bg-muted/40'>
       <Sidebar />
-      <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14 dark:bg-[#151518] flex-1 h-screen">
+      <div className='flex flex-col sm:gap-4 sm:py-4 sm:pl-14 dark:bg-[#151518] flex-1 h-screen'>
         <TopNavbar />
-        <main className="flex-1 p-4 sm:px-6 sm:py-0 dark:bg-[#151518] overflow-hidden">
-          <div className="overflow-auto h-full">
+        <main className='flex-1 p-4 sm:px-6 sm:py-0 dark:bg-[#151518] overflow-hidden'>
+          <div className='overflow-auto xl:overflow-hidden h-[89vh] '>
             <Outlet />
           </div>
         </main>

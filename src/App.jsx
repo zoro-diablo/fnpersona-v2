@@ -17,6 +17,12 @@ import { AuthProvider } from '@/context/AuthContext';
 import { Toaster } from './components/ui/toaster';
 import DashboardLayout from './layout/DashboardLayout';
 import Lobby from './routes/dashboard/Lobby';
+import NetWorth from './routes/dashboard/NetWorth';
+import Budget from './routes/dashboard/Budget';
+import Goals from './routes/dashboard/Goals';
+import Investment from './routes/dashboard/Investment';
+import Recurring from './routes/dashboard/Recurring';
+import Settings from './routes/dashboard/Settings';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -36,6 +42,12 @@ const router = createBrowserRouter(
           }
         >
           <Route path='lobby' element={<Lobby />} />
+          <Route path='networth' element={<NetWorth />} />
+          <Route path='budget' element={<Budget />} />
+          <Route path='goal' element={<Goals />} />
+          <Route path='investments' element={<Investment />} />
+          <Route path='recurring' element={<Recurring />} />
+          <Route path='settings' element={<Settings />} />
         </Route>
       </Route>
     </Route>
