@@ -19,7 +19,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import logo from '../../assets/logo.svg'
+import logo from '../../assets/logo.svg';
+import { GrTransaction } from 'react-icons/gr';
 
 function Sidebar() {
   return (
@@ -30,7 +31,8 @@ function Sidebar() {
             to='/'
             className='group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base bg-white shadow-md '
           >
-            <img src={logo}
+            <img
+              src={logo}
               className={`h-6 p-1  w-8 transition-all group-hover:scale-110 `}
             />
             <span className='sr-only'>FnPersona</span>
@@ -51,18 +53,6 @@ function Sidebar() {
           <Tooltip>
             <TooltipTrigger asChild>
               <NavLink
-                to='/dashboard/networth'
-                className='flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8'
-              >
-                <Wallet className='h-5 w-5  activebutton' />
-                <span className='sr-only'>Net Worth</span>
-              </NavLink>
-            </TooltipTrigger>
-            <TooltipContent side='right'>Net Worth</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <NavLink
                 to='/dashboard/budget'
                 className='flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'
               >
@@ -72,6 +62,31 @@ function Sidebar() {
             </TooltipTrigger>
             <TooltipContent side='right'>Budget</TooltipContent>
           </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <NavLink
+                to='/dashboard/transactions'
+                className='flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'
+              >
+                <GrTransaction className='h-5 w-5 activebutton' />
+                <span className='sr-only'>Transactions</span>
+              </NavLink>
+            </TooltipTrigger>
+            <TooltipContent side='right'>Transactions</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <NavLink
+                to='/dashboard/networth'
+                className='flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8'
+              >
+                <Wallet className='h-5 w-5  activebutton' />
+                <span className='sr-only'>Net Worth</span>
+              </NavLink>
+            </TooltipTrigger>
+            <TooltipContent side='right'>Net Worth</TooltipContent>
+          </Tooltip>
+
           <Tooltip>
             <TooltipTrigger asChild>
               <NavLink

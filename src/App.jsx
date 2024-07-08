@@ -23,6 +23,7 @@ import Goals from './routes/dashboard/Goals';
 import Investment from './routes/dashboard/Investment';
 import Recurring from './routes/dashboard/Recurring';
 import Settings from './routes/dashboard/Settings';
+import Transaction from './routes/dashboard/Transaction';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -44,6 +45,7 @@ const router = createBrowserRouter(
           <Route path='lobby' element={<Lobby />} />
           <Route path='networth' element={<NetWorth />} />
           <Route path='budget' element={<Budget />} />
+          <Route path='transactions' element={<Transaction />} />
           <Route path='goal' element={<Goals />} />
           <Route path='investments' element={<Investment />} />
           <Route path='recurring' element={<Recurring />} />

@@ -1,6 +1,10 @@
+import { BudgetComponent } from "@/components/cards/BudgetComponent"
+
 const Budget = () => {
   return (
-    <div>Budget</div>
+    <>
+    <BudgetComponent />
+    </>
   )
 }
 export default Budget
