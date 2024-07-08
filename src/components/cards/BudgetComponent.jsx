@@ -214,16 +214,19 @@ export function BudgetComponent() {
         <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
           {categories.map((category) => (
             <Card key={category.id} className='relative'>
-              <CardContent className='flex flex-col items-center justify-center gap-4'>
+              <CardContent className='flex flex-col items-center justify-center gap-4 py-5'>
                 <div className='text-2xl font-bold'>{category.name}</div>
                 <div className='flex items-center gap-2'>
                   <span className='text-lg font-bold'>
                     ${category.spent} / ${category.budget}
                   </span>
+                </div>
+                <Progress value={(category.spent / category.budget) * 100} />
                   <Dialog open={showEditModal} onOpenChange={setShowEditModal}>
                     <DialogTrigger asChild>
                       <Button
                         variant='outline'
+                        className='w-full'
                         size='sm'
                         onClick={() => {
                           setSelectedCategory(category);
@@ -236,7 +239,7 @@ export function BudgetComponent() {
                     {selectedCategory && (
                       <DialogContent>
                         <DialogHeader>
-                          <DialogTitle>Edit Category</DialogTitle>
+                          <DialogTitle className='text-white'>Edit Category</DialogTitle>
                         </DialogHeader>
                         <form
                           onSubmit={(e) => {
@@ -256,6 +259,7 @@ export function BudgetComponent() {
                                 name='name'
                                 defaultValue={selectedCategory.name}
                                 disabled
+                                className='text-white'
                               />
                             </div>
                             <div>
@@ -264,6 +268,7 @@ export function BudgetComponent() {
                                 id='budget'
                                 name='budget'
                                 type='number'
+                                className='text-white'
                                 min='0'
                                 defaultValue={selectedCategory.budget}
                                 required
@@ -277,8 +282,6 @@ export function BudgetComponent() {
                       </DialogContent>
                     )}
                   </Dialog>
-                </div>
-                <Progress value={(category.spent / category.budget) * 100} />
               </CardContent>
             </Card>
           ))}
