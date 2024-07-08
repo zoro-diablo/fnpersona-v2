@@ -497,7 +497,7 @@ export function SignupFormDemo() {
               <div className='text-center mx-auto'>
                 <GoogleLogin
                   buttonText='Sign Up'
-                  width={700}
+                  className='sm:w-600'
                   onSuccess={handleSignupSuccess}
                   onError={handleSignupError}
                 />

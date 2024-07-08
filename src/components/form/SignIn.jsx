@@ -99,7 +99,7 @@ export function SignIn() {
                 <Input
                   id='email'
                   type='email'
-                  placeholder='m@example.com'
+                  placeholder='mail@example.com'
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -135,7 +135,7 @@ export function SignIn() {
               <BottomGradient />
             </button>
             <GoogleLogin
-              width={600}
+              width={325}
               onSuccess={handleLoginSuccess}
               onError={handleLoginError}
             />
