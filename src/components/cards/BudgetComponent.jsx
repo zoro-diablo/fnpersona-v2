@@ -103,7 +103,7 @@ export function BudgetComponent() {
               >
                 <div className='grid gap-4'>
                   <div>
-                    <Label htmlFor='name'>Name</Label>
+                    <Label htmlFor='name' className='dark:text-white'>Name</Label>
                     <Input
                       id='name'
                       name='name'
@@ -112,7 +112,7 @@ export function BudgetComponent() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor='budget'>Budget</Label>
+                    <Label htmlFor='budget' className='dark:text-white'>Budget</Label>
                     <Input
                       id='budget'
                       name='budget'
@@ -136,7 +136,7 @@ export function BudgetComponent() {
           {categories.map((category) => (
             <Card key={category.id}>
               <CardHeader>
-                <CardTitle>{category.name}</CardTitle>
+                <CardTitle className='font-medium'>{category.name}</CardTitle>
                 <div className='flex items-center gap-2 justify-between'>
                   <span className='text-lg font-bold'>
                     ${category.spent} / ${category.budget}
@@ -173,7 +173,7 @@ export function BudgetComponent() {
                         >
                           <div className='grid gap-4'>
                             <div>
-                              <Label htmlFor='name'>Name</Label>
+                              <Label htmlFor='name' className='dark:text-white'>Name</Label>
                               <Input
                                 id='name'
                                 name='name'
@@ -183,7 +183,7 @@ export function BudgetComponent() {
                               />
                             </div>
                             <div>
-                              <Label htmlFor='budget'>Budget</Label>
+                              <Label htmlFor='budget' className='dark:text-white'>Budget</Label>
                               <Input
                                 id='budget'
                                 name='budget'
@@ -253,7 +253,7 @@ export function BudgetComponent() {
                         >
                           <div className='grid gap-4'>
                             <div>
-                              <Label htmlFor='name'>Name</Label>
+                              <Label htmlFor='name' className='dark:text-white'>Name</Label>
                               <Input
                                 id='name'
                                 name='name'
@@ -263,7 +263,7 @@ export function BudgetComponent() {
                               />
                             </div>
                             <div>
-                              <Label htmlFor='budget'>Budget</Label>
+                              <Label htmlFor='budget' className='dark:text-white'>Budget</Label>
                               <Input
                                 id='budget'
                                 name='budget'
