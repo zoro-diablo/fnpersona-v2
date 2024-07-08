@@ -68,7 +68,7 @@ export function TransactionTable() {
       ? transactions
       : transactions.filter((transaction) => transaction.category === selectedCategory)
   return (
-    (<div className="container mt-12 px-4 py-8">
+    (<div className="container mt-3 px-4 py-4">
       <h1 className="text-3xl font-bold mb-6 dark:text-white">Transaction History</h1>
       <div className="flex justify-between items-center mb-4">
         <DropdownMenu>
