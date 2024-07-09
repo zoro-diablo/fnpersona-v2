@@ -6,8 +6,12 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { ChevronDown, ChevronDownCircleIcon, ListFilterIcon, MoreHorizontal } from 'lucide-react';
-
+import {
+  ChevronDown,
+  ChevronDownCircleIcon,
+  ListFilterIcon,
+  MoreHorizontal,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -30,11 +34,17 @@ import {
 } from '@/components/ui/table';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { cn } from '@/lib/utils';
-import { addDays, format } from 'date-fns';
+import { addDays, parseISO } from 'date-fns';
 import { useState } from 'react';
 import { CalendarIcon } from 'lucide-react';
 import { Calendar } from '../ui/calendar';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from '@/components/ui/dialog';
 
 const initialData = [
   {
@@ -91,14 +101,14 @@ const columns = [
           (table.getIsSomePageRowsSelected() && 'indeterminate')
         }
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
+        aria-label='Select all'
       />
     ),
     cell: ({ row }) => (
       <Checkbox
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
+        aria-label='Select row'
       />
     ),
     enableSorting: false,
@@ -107,9 +117,7 @@ const columns = [
   {
     accessorKey: 'date',
     header: 'Date',
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue('date')}</div>
-    ),
+    cell: ({ row }) => <div className='capitalize'>{row.getValue('date')}</div>,
   },
   {
     accessorKey: 'amount',
@@ -122,15 +130,23 @@ const columns = [
         currency: 'USD',
       }).format(amount);
 
-      return <div className="text-left font-medium">{formatted}</div>;
+      return <div className='text-left font-medium'>{formatted}</div>;
     },
   },
   {
     accessorKey: 'category',
     header: 'Category',
     cell: ({ row }) => {
-      const [selectedCategory, setSelectedCategory] = useState(row.getValue('category'));
-      const categories = ['Groceries', 'Dining', 'Shopping', 'Utilities', 'Rent'];
+      const [selectedCategory, setSelectedCategory] = useState(
+        row.getValue('category')
+      );
+      const categories = [
+        'Groceries',
+        'Dining',
+        'Shopping',
+        'Utilities',
+        'Rent',
+      ];
 
       const handleCategoryChange = (category) => {
         setSelectedCategory(category);
@@ -140,11 +156,11 @@ const columns = [
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="capitalize">
-              {selectedCategory} <ChevronDown className="ml-2 h-4 w-4" />
+            <Button variant='outline' className='capitalize'>
+              {selectedCategory} <ChevronDown className='ml-2 h-4 w-4' />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent align='end'>
             {categories.map((category) => (
               <DropdownMenuItem
                 key={category}
@@ -163,7 +179,9 @@ const columns = [
     header: 'Description',
     cell: ({ row, table }) => {
       const [isEditing, setIsEditing] = useState(false);
-      const [newDescription, setNewDescription] = useState(row.getValue('description'));
+      const [newDescription, setNewDescription] = useState(
+        row.getValue('description')
+      );
 
       const handleEditDescription = () => {
         setIsEditing(true);
@@ -172,26 +190,30 @@ const columns = [
       const handleSaveDescription = () => {
         setIsEditing(false);
         const updatedData = table.options.data.map((item) =>
-          item.id === row.original.id ? { ...item, description: newDescription } : item
+          item.id === row.original.id
+            ? { ...item, description: newDescription }
+            : item
         );
         table.options.setData(updatedData);
       };
 
       return (
         <>
-          <div className="lowercase" onClick={handleEditDescription}>
+          <div className='lowercase' onClick={handleEditDescription}>
             {row.getValue('description')}
           </div>
           {isEditing && (
             <Dialog open={isEditing} onOpenChange={setIsEditing}>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle className='dark:text-white'>Edit Description</DialogTitle>
+                  <DialogTitle className='dark:text-white'>
+                    Edit Description
+                  </DialogTitle>
                 </DialogHeader>
                 <Input
                   value={newDescription}
                   onChange={(e) => setNewDescription(e.target.value)}
-                  className="mb-4 dark:text-white"
+                  className='mb-4 dark:text-white'
                 />
                 <DialogFooter>
                   <Button onClick={handleSaveDescription}>Save</Button>
@@ -210,7 +232,9 @@ const columns = [
       const transaction = row.original;
 
       const [isEditing, setIsEditing] = useState(false);
-      const [newDescription, setNewDescription] = useState(row.getValue('description'));
+      const [newDescription, setNewDescription] = useState(
+        row.getValue('description')
+      );
 
       const handleEditDescription = () => {
         setIsEditing(true);
@@ -219,7 +243,9 @@ const columns = [
       const handleSaveDescription = () => {
         setIsEditing(false);
         const updatedData = table.options.data.map((item) =>
-          item.id === row.original.id ? { ...item, description: newDescription } : item
+          item.id === row.original.id
+            ? { ...item, description: newDescription }
+            : item
         );
         table.options.setData(updatedData);
       };
@@ -228,12 +254,12 @@ const columns = [
         <div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
+              <Button variant='ghost' className='h-8 w-8 p-0'>
+                <span className='sr-only'>Open menu</span>
+                <MoreHorizontal className='h-4 w-4' />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+            <DropdownMenuContent align='end'>
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuItem
                 onClick={() => navigator.clipboard.writeText(transaction.id)}
@@ -251,12 +277,14 @@ const columns = [
             <Dialog open={isEditing} onOpenChange={setIsEditing}>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle className='dark:text-white'>Edit Description</DialogTitle>
+                  <DialogTitle className='dark:text-white'>
+                    Edit Description
+                  </DialogTitle>
                 </DialogHeader>
                 <Input
                   value={newDescription}
                   onChange={(e) => setNewDescription(e.target.value)}
-                  className="mb-4 dark:text-white"
+                  className='mb-4 dark:text-white'
                 />
                 <DialogFooter>
                   <Button onClick={handleSaveDescription}>Save</Button>
@@ -265,7 +293,6 @@ const columns = [
             </Dialog>
           )}
         </div>
-        
       );
     },
   },
@@ -278,15 +305,10 @@ export function TransactionTable() {
   const [columnVisibility, setColumnVisibility] = useState({});
   const [rowSelection, setRowSelection] = useState({});
   const [selectedCategory, setSelectedCategory] = useState('All');
-
-  const [date, setDate] = useState({
-    from: new Date(2022, 0, 20),
-    to: addDays(new Date(2022, 0, 20), 20),
-  });
-
-  const [editDescription, setEditDescription] = useState('');
+  const [dateRange, setDateRange] = useState({ from: null, to: null });
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingRowId, setEditingRowId] = useState(null);
+  const [editDescription, setEditDescription] = useState('');
 
   const table = useReactTable({
     data,
@@ -308,6 +330,23 @@ export function TransactionTable() {
     setData,
   });
 
+  const handleFilterByDateRange = (range) => {
+    setDateRange(range);
+
+    const filteredData = initialData.filter((transaction) => {
+      const transactionDate = parseISO(transaction.date);
+      const fromDate = range.from ? addDays(range.from, -1) : null;
+      const toDate = range.to ? addDays(range.to, 1) : null;
+
+      return (
+        (!fromDate || transactionDate > fromDate) &&
+        (!toDate || transactionDate < toDate)
+      );
+    });
+
+    setData(filteredData.length ? filteredData : []);
+  };
+
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
     setColumnFilters((prevFilters) => {
@@ -319,111 +358,122 @@ export function TransactionTable() {
     });
   };
 
-
-
   const handleSaveDescription = () => {
     setIsDialogOpen(false);
     const updatedData = data.map((item) =>
-      item.id === editingRowId ? { ...item, description: editDescription } : item
+      item.id === editingRowId
+        ? { ...item, description: editDescription }
+        : item
     );
     setData(updatedData);
     setEditingRowId(null);
   };
 
+  const handleExportCSV = () => {
+    const csvRows = [];
+    const headers = columns
+      .filter((column) => column.accessorKey)
+      .map((column) => column.header);
+    csvRows.push(headers.join(','));
+
+    data.forEach((row) => {
+      const values = columns
+        .filter((column) => column.accessorKey)
+        .map((column) => row[column.accessorKey]);
+      csvRows.push(values.join(','));
+    });
+
+    const csvData = csvRows.join('\n');
+    const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.setAttribute('download', 'transactions.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
-    <div className="w-full container">
-      <div className="text-2xl font-semibold my-5 dark:text-white">Transactions</div>
-      <div className="flex items-center py-4">
+    <div className='w-full container'>
+      <div className='text-2xl font-semibold my-5 dark:text-white'>
+        Transactions
+      </div>
+      <div className='flex flex-col lg:flex-row items-center py-4'>
         <Input
-          placeholder="Filter descriptions..."
+          placeholder='Filter descriptions...'
           value={table.getColumn('description')?.getFilterValue() ?? ''}
           onChange={(event) =>
             table.getColumn('description')?.setFilterValue(event.target.value)
           }
-          className="max-w-72 dark:text-white dark:bg-black"
+          className='max-w-72 dark:text-white dark:bg-black mb-2 lg:mb-0'
         />
-        <div className={cn('grid gap-2')}>
+        <div className={cn('flex flex-col lg:flex-row justify-between w-full gap-2')}>
           <Popover>
             <PopoverTrigger asChild>
               <Button
-                id="date"
-                variant={'outline'}
-                className={cn(
-                  'w-[300px] justify-start text-left font-normal dark:text-white',
-                  !date && 'text-muted-foreground'
-                )}
+                variant='outline'
+                className='ml-2 h-8 px-2 lg:px-3 dark:text-white'
               >
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {date?.from ? (
-                  date.to ? (
-                    <>
-                      {format(date.from, 'LLL dd, y')} -{' '}
-                      {format(date.to, 'LLL dd, y')}
-                    </>
-                  ) : (
-                    format(date.from, 'LLL dd, y')
-                  )
-                ) : (
-                  <span>Pick a date</span>
-                )}
+                <CalendarIcon className='mr-2 h-4 w-4 dark:text-white' />
+                Pick a date
+                <ChevronDown className='ml-auto h-4 w-4 dark:text-white' />
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-auto p-0 " align="start">
+            <PopoverContent className='w-auto p-0 dark:bg-gray-800'>
               <Calendar
                 initialFocus
-                mode="range"
-                defaultMonth={date?.from}
-                selected={date}
-                onSelect={setDate}
+                mode='range'
+                selected={dateRange}
+                onSelect={handleFilterByDateRange}
                 numberOfMonths={2}
-                className="dark:bg-[#27272a] dark:text-white border-none outline-none bg-white "
+                className='dark:text-white'
               />
             </PopoverContent>
           </Popover>
         </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto dark:text-white">
-              Columns <ChevronDown className="ml-2 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
-        <Button
-          variant="outline"
-          className="dark dark:text-black dark:bg-white ml-5"
-        >
-          Export
-        </Button>
+
+        <div className='flex flex-col lg:flex-row gap-5 mt-2 lg:mt-0'>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant='outline' className='ml-auto dark:text-white'>
+                Columns <ChevronDown className='ml-2 h-4 w-4' />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align='end'>
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className='capitalize'
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  );
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <Button onClick={handleExportCSV} className=' dark:text-black'>
+            Export
+          </Button>
+        </div>
       </div>
-      <div className="flex justify-between items-center mb-4">
+      <div className='flex flex-col lg:flex-row justify-between items-center mb-4'>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="flex items-center gap-2">
-              <ListFilterIcon className="w-4 h-4 dark:text-white" />
-              <span className="dark:text-white">Filter by Category</span>
-              <ChevronDownCircleIcon className="w-4 h-4 dark:text-white" />
+            <Button variant='outline' className='flex items-center gap-2'>
+              <ListFilterIcon className='w-4 h-4 dark:text-white' />
+              <span className='dark:text-white'>Filter by Category</span>
+              <ChevronDownCircleIcon className='w-4 h-4 dark:text-white' />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-48">
+          <DropdownMenuContent align='end' className='w-48'>
             <DropdownMenuLabel>Categories</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuCheckboxItem
@@ -465,7 +515,7 @@ export function TransactionTable() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border">
+      <div className='rounded-md border overflow-x-auto'>
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -493,7 +543,7 @@ export function TransactionTable() {
                   data-state={row.getIsSelected() && 'selected'}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="dark:text-white">
+                    <TableCell key={cell.id} className='dark:text-white'>
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -506,7 +556,7 @@ export function TransactionTable() {
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center dark:text-white"
+                  className='h-24 text-center dark:text-white'
                 >
                   No results.
                 </TableCell>
@@ -515,27 +565,27 @@ export function TransactionTable() {
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground dark:text-white">
+      <div className='flex flex-col lg:flex-row items-center justify-end space-x-2 py-4'>
+        <div className='flex-1 text-sm text-muted-foreground dark:text-white mb-2 lg:mb-0'>
           {table.getFilteredSelectedRowModel().rows.length} of{' '}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
-        <div className="space-x-2">
+        <div className='space-x-2'>
           <Button
-            variant="outline"
-            size="sm"
+            variant='outline'
+            size='sm'
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
-            className="dark:text-white"
+            className='dark:text-white'
           >
             Previous
           </Button>
           <Button
-            variant="outline"
-            size="sm"
+            variant='outline'
+            size='sm'
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
-            className="dark:text-white"
+            className='dark:text-white'
           >
             Next
           </Button>
@@ -544,12 +594,14 @@ export function TransactionTable() {
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle className='dark:text-white'>Edit Description</DialogTitle>
+            <DialogTitle className='dark:text-white'>
+              Edit Description
+            </DialogTitle>
           </DialogHeader>
           <Input
             value={editDescription}
             onChange={(e) => setEditDescription(e.target.value)}
-            className="mb-4"
+            className='mb-4'
           />
           <DialogFooter>
             <Button onClick={handleSaveDescription}>Save</Button>
