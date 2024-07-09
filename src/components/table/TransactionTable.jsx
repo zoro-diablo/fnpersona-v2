@@ -1,257 +1,561 @@
-import { useState } from "react"
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuCheckboxItem } from "@/components/ui/dropdown-menu"
-import { Button } from "@/components/ui/button"
-import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table"
-import { Input } from "@/components/ui/input"
+import {
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from '@tanstack/react-table';
+import { ChevronDown, ChevronDownCircleIcon, ListFilterIcon, MoreHorizontal } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import { cn } from '@/lib/utils';
+import { addDays, format } from 'date-fns';
+import { useState } from 'react';
+import { CalendarIcon } from 'lucide-react';
+import { Calendar } from '../ui/calendar';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+
+const initialData = [
+  {
+    id: 1,
+    date: '2023-06-01',
+    amount: 50.99,
+    category: 'Groceries',
+    description: 'Weekly grocery shopping',
+  },
+  {
+    id: 2,
+    date: '2023-06-05',
+    amount: 25.0,
+    category: 'Dining',
+    description: 'Dinner at local restaurant',
+  },
+  {
+    id: 3,
+    date: '2023-06-10',
+    amount: 75.25,
+    category: 'Shopping',
+    description: 'New shirt and pants',
+  },
+  {
+    id: 4,
+    date: '2023-06-15',
+    amount: 15.5,
+    category: 'Utilities',
+    description: 'Electric bill',
+  },
+  {
+    id: 5,
+    date: '2023-06-20',
+    amount: 100.0,
+    category: 'Rent',
+    description: 'Monthly rent payment',
+  },
+  {
+    id: 6,
+    date: '2023-06-25',
+    amount: 30.75,
+    category: 'Groceries',
+    description: 'Midweek grocery run',
+  },
+];
+
+const columns = [
+  {
+    id: 'select',
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && 'indeterminate')
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    accessorKey: 'date',
+    header: 'Date',
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue('date')}</div>
+    ),
+  },
+  {
+    accessorKey: 'amount',
+    header: 'Amount',
+    cell: ({ row }) => {
+      const amount = parseFloat(row.getValue('amount'));
+
+      const formatted = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+      }).format(amount);
+
+      return <div className="text-left font-medium">{formatted}</div>;
+    },
+  },
+  {
+    accessorKey: 'category',
+    header: 'Category',
+    cell: ({ row }) => {
+      const [selectedCategory, setSelectedCategory] = useState(row.getValue('category'));
+      const categories = ['Groceries', 'Dining', 'Shopping', 'Utilities', 'Rent'];
+
+      const handleCategoryChange = (category) => {
+        setSelectedCategory(category);
+        row.original.category = category;
+      };
+
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" className="capitalize">
+              {selectedCategory} <ChevronDown className="ml-2 h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            {categories.map((category) => (
+              <DropdownMenuItem
+                key={category}
+                onClick={() => handleCategoryChange(category)}
+              >
+                {category}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
+  },
+  {
+    accessorKey: 'description',
+    header: 'Description',
+    cell: ({ row, table }) => {
+      const [isEditing, setIsEditing] = useState(false);
+      const [newDescription, setNewDescription] = useState(row.getValue('description'));
+
+      const handleEditDescription = () => {
+        setIsEditing(true);
+      };
+
+      const handleSaveDescription = () => {
+        setIsEditing(false);
+        const updatedData = table.options.data.map((item) =>
+          item.id === row.original.id ? { ...item, description: newDescription } : item
+        );
+        table.options.setData(updatedData);
+      };
+
+      return (
+        <>
+          <div className="lowercase" onClick={handleEditDescription}>
+            {row.getValue('description')}
+          </div>
+          {isEditing && (
+            <Dialog open={isEditing} onOpenChange={setIsEditing}>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle className='dark:text-white'>Edit Description</DialogTitle>
+                </DialogHeader>
+                <Input
+                  value={newDescription}
+                  onChange={(e) => setNewDescription(e.target.value)}
+                  className="mb-4 dark:text-white"
+                />
+                <DialogFooter>
+                  <Button onClick={handleSaveDescription}>Save</Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          )}
+        </>
+      );
+    },
+  },
+  {
+    id: 'actions',
+    enableHiding: false,
+    cell: ({ row, table }) => {
+      const transaction = row.original;
+
+      const [isEditing, setIsEditing] = useState(false);
+      const [newDescription, setNewDescription] = useState(row.getValue('description'));
+
+      const handleEditDescription = () => {
+        setIsEditing(true);
+      };
+
+      const handleSaveDescription = () => {
+        setIsEditing(false);
+        const updatedData = table.options.data.map((item) =>
+          item.id === row.original.id ? { ...item, description: newDescription } : item
+        );
+        table.options.setData(updatedData);
+      };
+
+      return (
+        <div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuItem
+                onClick={() => navigator.clipboard.writeText(transaction.id)}
+              >
+                Copy transaction ID
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={handleEditDescription}>
+                Edit Description
+              </DropdownMenuItem>
+              <DropdownMenuItem>View details</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          {isEditing && (
+            <Dialog open={isEditing} onOpenChange={setIsEditing}>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle className='dark:text-white'>Edit Description</DialogTitle>
+                </DialogHeader>
+                <Input
+                  value={newDescription}
+                  onChange={(e) => setNewDescription(e.target.value)}
+                  className="mb-4 dark:text-white"
+                />
+                <DialogFooter>
+                  <Button onClick={handleSaveDescription}>Save</Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          )}
+        </div>
+        
+      );
+    },
+  },
+];
 
 export function TransactionTable() {
-  const [transactions, setTransactions] = useState([
-    {
-      id: 1,
-      date: "2023-06-01",
-      amount: 50.99,
-      category: "Groceries",
-      description: "Weekly grocery shopping",
+  const [data, setData] = useState(initialData);
+  const [sorting, setSorting] = useState([]);
+  const [columnFilters, setColumnFilters] = useState([]);
+  const [columnVisibility, setColumnVisibility] = useState({});
+  const [rowSelection, setRowSelection] = useState({});
+  const [selectedCategory, setSelectedCategory] = useState('All');
+
+  const [date, setDate] = useState({
+    from: new Date(2022, 0, 20),
+    to: addDays(new Date(2022, 0, 20), 20),
+  });
+
+  const [editDescription, setEditDescription] = useState('');
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [editingRowId, setEditingRowId] = useState(null);
+
+  const table = useReactTable({
+    data,
+    columns,
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setRowSelection,
+    state: {
+      sorting,
+      columnFilters,
+      columnVisibility,
+      rowSelection,
     },
-    {
-      id: 2,
-      date: "2023-06-05",
-      amount: 25.0,
-      category: "Dining",
-      description: "Dinner at local restaurant",
-    },
-    {
-      id: 3,
-      date: "2023-06-10",
-      amount: 75.25,
-      category: "Shopping",
-      description: "New shirt and pants",
-    },
-    {
-      id: 4,
-      date: "2023-06-15",
-      amount: 15.5,
-      category: "Utilities",
-      description: "Electric bill",
-    },
-    {
-      id: 5,
-      date: "2023-06-20",
-      amount: 100.0,
-      category: "Rent",
-      description: "Monthly rent payment",
-    },
-    {
-      id: 6,
-      date: "2023-06-25",
-      amount: 30.75,
-      category: "Groceries",
-      description: "Midweek grocery run",
-    },
-  ])
-  const [selectedCategory, setSelectedCategory] = useState("All")
+    setData,
+  });
+
   const handleCategoryChange = (category) => {
-    setSelectedCategory(category)
-  }
-  const handleTransactionEdit = (id, newDescription) => {
-    setTransactions((prevTransactions) => {
-      return prevTransactions.map((transaction) => {
-        if (transaction.id === id) {
-          return { ...transaction, description: newDescription }
-        }
-        return transaction
-      });
-    })
-  }
-  const filteredTransactions =
-    selectedCategory === "All"
-      ? transactions
-      : transactions.filter((transaction) => transaction.category === selectedCategory)
+    setSelectedCategory(category);
+    setColumnFilters((prevFilters) => {
+      if (category === 'All') {
+        return prevFilters.filter((filter) => filter.id !== 'category');
+      } else {
+        return [...prevFilters, { id: 'category', value: category }];
+      }
+    });
+  };
+
+
+
+  const handleSaveDescription = () => {
+    setIsDialogOpen(false);
+    const updatedData = data.map((item) =>
+      item.id === editingRowId ? { ...item, description: editDescription } : item
+    );
+    setData(updatedData);
+    setEditingRowId(null);
+  };
+
   return (
-    (<div className="container mt-3 px-4 py-4">
-      <h1 className="text-3xl font-bold mb-6 dark:text-white">Transaction History</h1>
+    <div className="w-full container">
+      <div className="text-2xl font-semibold my-5 dark:text-white">Transactions</div>
+      <div className="flex items-center py-4">
+        <Input
+          placeholder="Filter descriptions..."
+          value={table.getColumn('description')?.getFilterValue() ?? ''}
+          onChange={(event) =>
+            table.getColumn('description')?.setFilterValue(event.target.value)
+          }
+          className="max-w-72 dark:text-white dark:bg-black"
+        />
+        <div className={cn('grid gap-2')}>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                id="date"
+                variant={'outline'}
+                className={cn(
+                  'w-[300px] justify-start text-left font-normal dark:text-white',
+                  !date && 'text-muted-foreground'
+                )}
+              >
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {date?.from ? (
+                  date.to ? (
+                    <>
+                      {format(date.from, 'LLL dd, y')} -{' '}
+                      {format(date.to, 'LLL dd, y')}
+                    </>
+                  ) : (
+                    format(date.from, 'LLL dd, y')
+                  )
+                ) : (
+                  <span>Pick a date</span>
+                )}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0 " align="start">
+              <Calendar
+                initialFocus
+                mode="range"
+                defaultMonth={date?.from}
+                selected={date}
+                onSelect={setDate}
+                numberOfMonths={2}
+                className="dark:bg-[#27272a] dark:text-white border-none outline-none bg-white "
+              />
+            </PopoverContent>
+          </Popover>
+        </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" className="ml-auto dark:text-white">
+              Columns <ChevronDown className="ml-2 h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            {table
+              .getAllColumns()
+              .filter((column) => column.getCanHide())
+              .map((column) => {
+                return (
+                  <DropdownMenuCheckboxItem
+                    key={column.id}
+                    className="capitalize"
+                    checked={column.getIsVisible()}
+                    onCheckedChange={(value) =>
+                      column.toggleVisibility(!!value)
+                    }
+                  >
+                    {column.id}
+                  </DropdownMenuCheckboxItem>
+                );
+              })}
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <Button
+          variant="outline"
+          className="dark dark:text-black dark:bg-white ml-5"
+        >
+          Export
+        </Button>
+      </div>
       <div className="flex justify-between items-center mb-4">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="flex items-center gap-2">
-              <FilterIcon className="w-4 h-4 dark:text-white" />
+              <ListFilterIcon className="w-4 h-4 dark:text-white" />
               <span className="dark:text-white">Filter by Category</span>
-              <ChevronDownIcon className="w-4 h-4 dark:text-white" />
+              <ChevronDownCircleIcon className="w-4 h-4 dark:text-white" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48">
             <DropdownMenuLabel>Categories</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuCheckboxItem
-              checked={selectedCategory === "All"}
-              onCheckedChange={() => handleCategoryChange("All")}>
+              checked={selectedCategory === 'All'}
+              onCheckedChange={() => handleCategoryChange('All')}
+            >
               All
             </DropdownMenuCheckboxItem>
             <DropdownMenuCheckboxItem
-              checked={selectedCategory === "Groceries"}
-              onCheckedChange={() => handleCategoryChange("Groceries")}>
+              checked={selectedCategory === 'Groceries'}
+              onCheckedChange={() => handleCategoryChange('Groceries')}
+            >
               Groceries
             </DropdownMenuCheckboxItem>
             <DropdownMenuCheckboxItem
-              checked={selectedCategory === "Dining"}
-              onCheckedChange={() => handleCategoryChange("Dining")}>
+              checked={selectedCategory === 'Dining'}
+              onCheckedChange={() => handleCategoryChange('Dining')}
+            >
               Dining
             </DropdownMenuCheckboxItem>
             <DropdownMenuCheckboxItem
-              checked={selectedCategory === "Shopping"}
-              onCheckedChange={() => handleCategoryChange("Shopping")}>
+              checked={selectedCategory === 'Shopping'}
+              onCheckedChange={() => handleCategoryChange('Shopping')}
+            >
               Shopping
             </DropdownMenuCheckboxItem>
             <DropdownMenuCheckboxItem
-              checked={selectedCategory === "Utilities"}
-              onCheckedChange={() => handleCategoryChange("Utilities")}>
+              checked={selectedCategory === 'Utilities'}
+              onCheckedChange={() => handleCategoryChange('Utilities')}
+            >
               Utilities
             </DropdownMenuCheckboxItem>
             <DropdownMenuCheckboxItem
-              checked={selectedCategory === "Rent"}
-              onCheckedChange={() => handleCategoryChange("Rent")}>
+              checked={selectedCategory === 'Rent'}
+              onCheckedChange={() => handleCategoryChange('Rent')}
+            >
               Rent
             </DropdownMenuCheckboxItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="overflow-x-auto">
+      <div className="rounded-md border">
         <Table>
           <TableHeader>
-            <TableRow>
-              <TableHead>Date</TableHead>
-              <TableHead>Amount</TableHead>
-              <TableHead>Category</TableHead>
-              <TableHead>Description</TableHead>
-              <TableHead>Edit</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filteredTransactions.map((transaction) => (
-              <TableRow key={transaction.id}>
-                <TableCell className='dark:text-white'>{transaction.date}</TableCell>
-                <TableCell className='dark:text-white'>${transaction.amount.toFixed(2)}</TableCell>
-                <TableCell>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="outline" className="flex items-center gap-2 dark:text-white">
-                        {transaction.category}
-                        <ChevronDownIcon className="w-4 h-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-48 ">
-                      <DropdownMenuLabel className='dark:text-white'>Change Category</DropdownMenuLabel>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuCheckboxItem
-                        checked={transaction.category === "Groceries"}
-                        onCheckedChange={() => handleTransactionEdit(transaction.id, "Groceries")}>
-                        Groceries
-                      </DropdownMenuCheckboxItem>
-                      <DropdownMenuCheckboxItem
-                        checked={transaction.category === "Dining"}
-                        onCheckedChange={() => handleTransactionEdit(transaction.id, "Dining")}>
-                        Dining
-                      </DropdownMenuCheckboxItem>
-                      <DropdownMenuCheckboxItem
-                        checked={transaction.category === "Shopping"}
-                        onCheckedChange={() => handleTransactionEdit(transaction.id, "Shopping")}>
-                        Shopping
-                      </DropdownMenuCheckboxItem>
-                      <DropdownMenuCheckboxItem
-                        checked={transaction.category === "Utilities"}
-                        onCheckedChange={() => handleTransactionEdit(transaction.id, "Utilities")}>
-                        Utilities
-                      </DropdownMenuCheckboxItem>
-                      <DropdownMenuCheckboxItem
-                        checked={transaction.category === "Rent"}
-                        onCheckedChange={() => handleTransactionEdit(transaction.id, "Rent")}>
-                        Rent
-                      </DropdownMenuCheckboxItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </TableCell>
-                <TableCell className='dark:text-white'>{transaction.description}</TableCell>
-                <TableCell>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="outline" size="icon">
-                        <FilePenIcon className="w-4 h-4 dark:text-white" />
-                        <span className="sr-only">Edit transaction description</span>
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuLabel>Edit Transaction Description</DropdownMenuLabel>
-                      <DropdownMenuSeparator />
-                      <Input
-                        type="text"
-                        defaultValue={transaction.description}
-                        onBlur={(e) => handleTransactionEdit(transaction.id, e.target.value)} />
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </TableCell>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </TableHead>
+                  );
+                })}
               </TableRow>
             ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && 'selected'}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id} className="dark:text-white">
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center dark:text-white"
+                >
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </div>
-    </div>)
-  );
-}
-
-function ChevronDownIcon(props) {
-  return (
-    (<svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round">
-      <path d="m6 9 6 6 6-6" />
-    </svg>)
-  );
-}
-
-
-function FilePenIcon(props) {
-  return (
-    (<svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round">
-      <path d="M12 22h6a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v10" />
-      <path d="M14 2v4a2 2 0 0 0 2 2h4" />
-      <path d="M10.4 12.6a2 2 0 1 1 3 3L8 21l-4 1 1-4Z" />
-    </svg>)
-  );
-}
-
-
-function FilterIcon(props) {
-  return (
-    (<svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round">
-      <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
-    </svg>)
+      <div className="flex items-center justify-end space-x-2 py-4">
+        <div className="flex-1 text-sm text-muted-foreground dark:text-white">
+          {table.getFilteredSelectedRowModel().rows.length} of{' '}
+          {table.getFilteredRowModel().rows.length} row(s) selected.
+        </div>
+        <div className="space-x-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+            className="dark:text-white"
+          >
+            Previous
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+            className="dark:text-white"
+          >
+            Next
+          </Button>
+        </div>
+      </div>
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className='dark:text-white'>Edit Description</DialogTitle>
+          </DialogHeader>
+          <Input
+            value={editDescription}
+            onChange={(e) => setEditDescription(e.target.value)}
+            className="mb-4"
+          />
+          <DialogFooter>
+            <Button onClick={handleSaveDescription}>Save</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 }
