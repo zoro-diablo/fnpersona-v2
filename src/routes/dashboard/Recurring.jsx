@@ -1,6 +1,10 @@
+import { RecurringExpenses } from "@/components/expenses/RecurringExpenses"
+
 const Recurring = () => {
   return (
-    <div>Recurring</div>
+    <div>
+      <RecurringExpenses />
+    </div>
   )
 }
 export default Recurring
