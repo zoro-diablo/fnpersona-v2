@@ -254,7 +254,7 @@ export function RecurringExpenses() {
       )}
       <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="col-span-2">
-          <h2 className="text-2xl font-bold dark:text-white">Calendar View</h2>
+          <h2 className="text-2xl font-bold dark:text-white mb-2">Calendar View</h2>
           <BigCalendar
             localizer={localizer}
             events={events}
@@ -265,7 +265,7 @@ export function RecurringExpenses() {
           />
         </div>
         <div>
-          <h2 className="text-2xl font-bold dark:text-white">Reminders</h2>
+          <h2 className="text-2xl font-bold dark:text-white mb-2">Reminders</h2>
           {reminders.map((reminder) => (
             <Card key={reminder.id}>
               <CardContent className="grid gap-2 p-5">
