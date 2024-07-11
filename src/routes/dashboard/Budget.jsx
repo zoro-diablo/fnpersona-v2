@@ -9,9 +9,13 @@ const Budget = () => {
   return (
     <>
       <div className='container mx-auto p-4'>
-        <h1 className='text-2xl font-bold dark:text-white mb-4'>
+        <div className='text-2xl font-semibold mt-5 dark:text-white'>
           Budget Overview
-        </h1>
+        </div>
+        <p className='text-muted-foreground mb-4 mt-1 dark:text-white/50'>
+          Get a clear snapshot of your spending and savings.
+        </p>
+
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4'>
           <div className='col-span-1'>
             <BudgetCards />

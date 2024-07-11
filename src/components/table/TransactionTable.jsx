@@ -395,9 +395,13 @@ export function TransactionTable() {
 
   return (
     <div className='w-full container'>
-      <div className='text-2xl font-semibold my-5 dark:text-white'>
-        Transactions
-      </div>
+    <div className='text-2xl font-semibold mt-5 dark:text-white'>
+  Transactions
+</div>
+<p className='text-muted-foreground dark:text-white/50'>
+  Monitor and manage your recurring expenses efficiently.
+</p>
+
       <div className='flex flex-col lg:flex-row items-center py-4'>
         <Input
           placeholder='Filter descriptions...'
@@ -407,7 +411,11 @@ export function TransactionTable() {
           }
           className='max-w-72 dark:text-white dark:bg-black mb-2 lg:mb-0'
         />
-        <div className={cn('flex flex-col lg:flex-row justify-between w-full gap-2')}>
+        <div
+          className={cn(
+            'flex flex-col lg:flex-row justify-between w-full gap-2'
+          )}
+        >
           <Popover>
             <PopoverTrigger asChild>
               <Button
