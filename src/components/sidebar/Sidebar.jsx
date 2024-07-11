@@ -77,6 +77,18 @@ function Sidebar() {
           <Tooltip>
             <TooltipTrigger asChild>
               <NavLink
+                to='/dashboard/recurring'
+                className='flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'
+              >
+                <Calendar className='h-5 w-5 activebutton' />
+                <span className='sr-only'>Recurring Expenses</span>
+              </NavLink>
+            </TooltipTrigger>
+            <TooltipContent side='right'>Recurring Expenses</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <NavLink
                 to='/dashboard/networth'
                 className='flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8'
               >
@@ -111,18 +123,7 @@ function Sidebar() {
             </TooltipTrigger>
             <TooltipContent side='right'>Investments</TooltipContent>
           </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <NavLink
-                to='/dashboard/recurring'
-                className='flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'
-              >
-                <Calendar className='h-5 w-5 activebutton' />
-                <span className='sr-only'>Recurring Expenses</span>
-              </NavLink>
-            </TooltipTrigger>
-            <TooltipContent side='right'>Recurring Expenses</TooltipContent>
-          </Tooltip>
+  
         </nav>
         <nav className='mt-auto flex flex-col items-center gap-4 px-2 sm:py-5'>
           <Tooltip>
