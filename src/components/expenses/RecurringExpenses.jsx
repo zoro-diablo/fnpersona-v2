@@ -8,6 +8,7 @@ import { FaEdit, FaTrash } from 'react-icons/fa';
 import { Calendar as BigCalendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import { Checkbox } from "@/components/ui/checkbox";
 
 const localizer = momentLocalizer(moment);
 
@@ -61,6 +62,7 @@ export function RecurringExpenses() {
   const [isEditMode, setIsEditMode] = useState(false);
   const [hoveredExpenseId, setHoveredExpenseId] = useState(null);
   const [calendarEvent, setCalendarEvent] = useState(null);
+  const [errors, setErrors] = useState({});
 
   const handleExpenseClick = (expense) => {
     setSelectedExpense({
@@ -74,6 +76,7 @@ export function RecurringExpenses() {
     setSelectedExpense(null);
     setIsEditMode(false);
     setCalendarEvent(null);
+    setErrors({});
   };
 
   const handleAddExpense = () => {
@@ -88,9 +91,32 @@ export function RecurringExpenses() {
     setIsEditMode(false);
   };
 
+  const validateForm = (form) => {
+    const newErrors = {};
+    if (!form.name.value) newErrors.name = 'Name is required';
+    if (!form.amount.value || isNaN(form.amount.value) || form.amount.value <= 0)
+      newErrors.amount = 'Valid amount is required';
+    if (!form.dueDate.value) newErrors.dueDate = 'Due date is required';
+    if (!form.frequency.value) newErrors.frequency = 'Frequency is required';
+
+    if (selectedExpense.splitBill) {
+      selectedExpense.participants.forEach((participant, index) => {
+        if (!participant.name) newErrors[`participantName${index}`] = 'Name is required';
+        if (isNaN(participant.share) || participant.share <= 0)
+          newErrors[`participantShare${index}`] = 'Valid share is required';
+      });
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSaveExpense = (e) => {
     e.preventDefault();
     const form = e.target;
+
+    if (!validateForm(form)) return;
+
     const newExpense = {
       id: selectedExpense.id || expenses.length + 1,
       name: form.name.value,
@@ -120,7 +146,7 @@ export function RecurringExpenses() {
   const handleParticipantChange = (index, key, value) => {
     const updatedParticipants = selectedExpense.participants.map(
       (participant, i) =>
-        i === index ? { ...participant, [key]: value } : participant
+        i === index ? { ...participant, [key]: key === 'share' ? parseFloat(value) : value } : participant
     );
     setSelectedExpense((prevExpense) => ({
       ...prevExpense,
@@ -131,7 +157,7 @@ export function RecurringExpenses() {
   const handleAddParticipant = () => {
     setSelectedExpense((prevExpense) => ({
       ...prevExpense,
-      participants: [...prevExpense.participants, { name: '', share: '' }],
+      participants: [...prevExpense.participants, { name: '', share: 0 }],
     }));
   };
 
@@ -217,14 +243,14 @@ export function RecurringExpenses() {
                   <ul className='text-sm text-muted-foreground'>
                     {expense.participants.map((participant, index) => (
                       <li key={index}>
-                        {participant.name}: ${participant.share.toFixed(2)}
+                        {participant.name}: ${parseFloat(participant.share).toFixed(2)}
                       </li>
                     ))}
                   </ul>
                 </div>
               )}
               {hoveredExpenseId === expense.id && (
-                <div className='absolute top-0 right-0 h-full flex items-center bg-gray-100 justify-between rounded-r-lg'>
+                <div className='absolute top-0 right-0 h-full grid items-center justify-center bg-gray-100  rounded-r-lg w-[20%]'>
                   <button
                     className='p-2 group'
                     onClick={() => handleExpenseClick(expense)}
@@ -272,6 +298,7 @@ export function RecurringExpenses() {
                     required
                     className='dark:text-white'
                   />
+                  {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
                 </div>
                 <div className='space-y-1'>
                   <Label htmlFor='amount' className='dark:text-white'>
@@ -288,6 +315,7 @@ export function RecurringExpenses() {
                     required
                     className='dark:text-white'
                   />
+                  {errors.amount && <p className="text-red-500 text-sm">{errors.amount}</p>}
                 </div>
                 <div className='space-y-1'>
                   <Label htmlFor='dueDate' className='dark:text-white'>
@@ -303,6 +331,7 @@ export function RecurringExpenses() {
                     required
                     className='dark:text-white'
                   />
+                  {errors.dueDate && <p className="text-red-500 text-sm">{errors.dueDate}</p>}
                 </div>
                 <div className='space-y-1'>
                   <Label htmlFor='frequency' className='dark:text-white'>
@@ -319,8 +348,9 @@ export function RecurringExpenses() {
                     required
                     className='dark:text-white'
                   />
+                  {errors.frequency && <p className="text-red-500 text-sm">{errors.frequency}</p>}
                 </div>
-                <div className='space-y-1'>
+                <div className=' flex items-center'>
                   <Label htmlFor='splitBill' className='dark:text-white'>
                     Split Bill
                   </Label>
@@ -329,7 +359,7 @@ export function RecurringExpenses() {
                     name='splitBill'
                     type='checkbox'
                     defaultChecked={selectedExpense?.splitBill || false}
-                    className='form-checkbox h-4 w-4 text-primary-600 transition duration-150 ease-in-out ml-2'
+                    className='form-checkbox h-4 w-4 text-primary-600 transition duration-150 ease-in-out ml-2 cursor-pointer '
                     onChange={(e) =>
                       setSelectedExpense((prevExpense) => ({
                         ...prevExpense,
@@ -357,6 +387,7 @@ export function RecurringExpenses() {
                           required
                           className='dark:text-white'
                         />
+                        {errors[`participantName${index}`] && <p className="text-red-500 text-sm">{errors[`participantName${index}`]}</p>}
                         <Input
                           type='number'
                           placeholder='Share'
@@ -372,6 +403,7 @@ export function RecurringExpenses() {
                           required
                           className='dark:text-white'
                         />
+                        {errors[`participantShare${index}`] && <p className="text-red-500 text-sm">{errors[`participantShare${index}`]}</p>}
                         <button
                           type='button'
                           onClick={() => handleRemoveParticipant(index)}
@@ -384,7 +416,7 @@ export function RecurringExpenses() {
                     <button
                       type='button'
                       onClick={handleAddParticipant}
-                      className='text-blue-500 hover:text-blue-700 transition duration-150 ease-in-out'
+                      className='text-blue-500 hover:text-blue-700 transition duration-150 ease-in-out text-sm p-2'
                     >
                       Add Participant
                     </button>
