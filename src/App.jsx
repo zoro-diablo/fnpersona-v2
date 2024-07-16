@@ -24,6 +24,7 @@ import Investment from './routes/dashboard/Investment';
 import Recurring from './routes/dashboard/Recurring';
 import Settings from './routes/dashboard/Settings';
 import Transaction from './routes/dashboard/Transaction';
+import Firecalculator from './routes/dashboard/Firecalculator';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -50,6 +51,7 @@ const router = createBrowserRouter(
           <Route path='investments' element={<Investment />} />
           <Route path='recurring' element={<Recurring />} />
           <Route path='settings' element={<Settings />} />
+          <Route path='retirement' element={<Firecalculator />} />
         </Route>
       </Route>
     </Route>

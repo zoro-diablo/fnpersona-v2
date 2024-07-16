@@ -12,6 +12,7 @@ import {
   Wallet,
   Calendar,
   BriefcaseBusinessIcon,
+  Calculator,
 } from 'lucide-react';
 import {
   Tooltip,
@@ -86,18 +87,6 @@ function Sidebar() {
             </TooltipTrigger>
             <TooltipContent side='right'>Recurring Expenses</TooltipContent>
           </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <NavLink
-                to='/dashboard/networth'
-                className='flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8'
-              >
-                <Wallet className='h-5 w-5  activebutton' />
-                <span className='sr-only'>Net Worth</span>
-              </NavLink>
-            </TooltipTrigger>
-            <TooltipContent side='right'>Net Worth</TooltipContent>
-          </Tooltip>
 
           <Tooltip>
             <TooltipTrigger asChild>
@@ -111,6 +100,19 @@ function Sidebar() {
             </TooltipTrigger>
             <TooltipContent side='right'>Goal</TooltipContent>
           </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <NavLink
+                to='/dashboard/retirement'
+                className='flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'
+              >
+                <Calculator className='h-5 w-5 activebutton' />
+                <span className='sr-only'>RetirementPlanner</span>
+              </NavLink>
+            </TooltipTrigger>
+            <TooltipContent side='right'>RetirementPlanner</TooltipContent>
+          </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
               <NavLink
@@ -123,7 +125,18 @@ function Sidebar() {
             </TooltipTrigger>
             <TooltipContent side='right'>Investments</TooltipContent>
           </Tooltip>
-  
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <NavLink
+                to='/dashboard/networth'
+                className='flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8'
+              >
+                <Wallet className='h-5 w-5  activebutton' />
+                <span className='sr-only'>Net Worth</span>
+              </NavLink>
+            </TooltipTrigger>
+            <TooltipContent side='right'>Net Worth</TooltipContent>
+          </Tooltip>
         </nav>
         <nav className='mt-auto flex flex-col items-center gap-4 px-2 sm:py-5'>
           <Tooltip>
