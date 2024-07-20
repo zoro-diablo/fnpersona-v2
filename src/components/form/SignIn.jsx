@@ -11,6 +11,8 @@ import Loader from '../loader/Loader';
 import { useToast } from '@/components/ui/use-toast';
 import { Button } from '../ui/button';
 import { ToastAction } from '../ui/toast';
+import Spline from '@splinetool/react-spline';
+
 
 export function SignIn() {
   const [email, setEmail] = useState('');
@@ -149,13 +151,14 @@ export function SignIn() {
         </form>
       </div>
       <div className='hidden lg:block bg-muted'>
-        <img
+        {/* <img
           src={svg}
           alt='Image'
           width='1920'
           height='1080'
           className='h-full w-full object-cover dark:brightness-[0.2] dark:grayscale'
-        />
+        /> */}
+        <Spline scene="https://prod.spline.design/IMsb91hYDQ9QlPmt/scene.splinecode" />
       </div>
     </div>
   );

@@ -3,20 +3,40 @@ import { format } from 'date-fns';
 import { toast } from '@/components/ui/use-toast';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import { CalendarIcon } from '@radix-ui/react-icons';
 import { Label } from '@/components/CustomInput/Label';
 import { Input } from '@/components/CustomInput/Input';
 import Section from '@/components/section/Section';
 import { Link, useNavigate } from 'react-router-dom';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { useAuth } from '@/context/AuthContext';
 import { GoogleLogin } from '@react-oauth/google';
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import svg from '../../assets/placeholder.svg';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import Loader from '../loader/Loader';
-import { useToast } from "@/components/ui/use-toast"
+import { useToast } from '@/components/ui/use-toast';
+import Spline from '@splinetool/react-spline';
 
 const TermsDialog = () => (
   <Dialog>
@@ -27,7 +47,9 @@ const TermsDialog = () => (
     </DialogTrigger>
     <DialogContent className='max-h-[80vh] overflow-y-auto'>
       <DialogHeader>
-        <DialogTitle className='dark:text-white'>Terms of Use and Privacy Policy</DialogTitle>
+        <DialogTitle className='dark:text-white'>
+          Terms of Use and Privacy Policy
+        </DialogTitle>
       </DialogHeader>
       <DialogDescription>
         <div className='space-y-4'>
@@ -209,7 +231,7 @@ const TermsDialog = () => (
 
 export function SignupFormDemo() {
   const { login } = useAuth();
-  const { toast } = useToast()
+  const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     firstname: '',
@@ -261,7 +283,7 @@ export function SignupFormDemo() {
       !formData.timezone
     ) {
       toast({
-        variant: "destructive",
+        variant: 'destructive',
         title: 'Validation Error',
         description: 'All fields are required, including timezone.',
       });
@@ -519,13 +541,14 @@ export function SignupFormDemo() {
           </div>
         </div>
         <div className='hidden lg:block bg-muted'>
-          <img
+          {/* <img
             src={svg}
             alt='image'
             width='1920'
             height='1080'
             className='h-full w-full object-cover dark:brightness-[0.2] dark:grayscale'
-          />
+          /> */}
+          <Spline scene='https://prod.spline.design/khbVxCRPxA2xpyPw/scene.splinecode' />
         </div>
       </div>
     </Section>
