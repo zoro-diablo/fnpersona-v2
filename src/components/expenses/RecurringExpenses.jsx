@@ -455,21 +455,27 @@ export function RecurringExpenses() {
         </div>
         <div>
           <h2 className='text-2xl font-bold dark:text-white mb-2'>Reminders</h2>
-          {reminders.map((reminder) => (
-            <Card key={reminder.id}>
-              <CardContent className='grid gap-2 p-5'>
-                <div className='flex items-center justify-between'>
-                  <div className='font-semibold'>{reminder.name}</div>
-                  <div className='text-primary'>
-                    {moment(reminder.dueDate).format('MMM DD')}
+          {reminders.length === 0 ? (
+            <p className='text-muted-foreground dark:text-white/50'>
+              No reminders for the next 7 days.
+            </p>
+          ) : (
+            reminders.map((reminder) => (
+              <Card key={reminder.id}>
+                <CardContent className='grid gap-2 p-5'>
+                  <div className='flex items-center justify-between'>
+                    <div className='font-semibold'>{reminder.name}</div>
+                    <div className='text-primary'>
+                      {moment(reminder.dueDate).format('MMM DD')}
+                    </div>
                   </div>
-                </div>
-                <div className='text-sm text-muted-foreground'>
-                  Reminder set for {reminder.daysUntilDue} day(s) before
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                  <div className='text-sm text-muted-foreground'>
+                    Reminder set for {reminder.daysUntilDue} day(s) before
+                  </div>
+                </CardContent>
+              </Card>
+            ))
+          )}
         </div>
       </div>
     </div>
