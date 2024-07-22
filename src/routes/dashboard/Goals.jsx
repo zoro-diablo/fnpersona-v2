@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
@@ -9,11 +9,12 @@ import { Progress } from '@/components/ui/progress';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
 const Goals = () => {
-  const [goals, setGoals] = useState([
+  const initialGoals = [
     { id: 1, name: 'Emergency Fund', targetAmount: 5000, currentAmount: 1500, deadline: '2024-12-31', contributions: [] },
     { id: 2, name: 'Vacation', targetAmount: 2000, currentAmount: 500, deadline: '2024-08-01', contributions: [] },
-  ]);
-
+  ];
+  
+  const [goals, setGoals] = useState(initialGoals);
   const [netWorth, setNetWorth] = useState(10000);
   const [selectedGoal, setSelectedGoal] = useState(null);
   const [isEditMode, setIsEditMode] = useState(false);
@@ -31,16 +32,16 @@ const Goals = () => {
   };
 
   const handleDeleteGoal = (goal) => {
-    setGoalToDelete(goal); 
+    setGoalToDelete(goal);
   };
 
   const handleConfirmDelete = () => {
     setGoals(goals.filter(goal => goal.id !== goalToDelete.id));
-    setGoalToDelete(null); 
+    setGoalToDelete(null);
   };
 
   const handleCancelDelete = () => {
-    setGoalToDelete(null); 
+    setGoalToDelete(null);
   };
 
   const handleSaveGoal = (goal) => {
@@ -52,6 +53,7 @@ const Goals = () => {
     setSelectedGoal(null);
   };
 
+  // Add a contribution to a goal
   const handleContribution = (goalId, amount) => {
     setGoals(goals.map(goal => {
       if (goal.id === goalId) {
@@ -73,6 +75,10 @@ const Goals = () => {
 
   const GoalForm = ({ goal, onSave, isEditMode }) => {
     const [formData, setFormData] = useState(goal);
+
+    useEffect(() => {
+      setFormData(goal);
+    }, [goal]);
 
     const handleChange = (e) => {
       const { name, value } = e.target;
@@ -192,7 +198,7 @@ const Goals = () => {
     <div className="container mt-6 py-8 px-4 md:px-6">
       <div className="mb-8 flex flex-col md:flex-row justify-between items-center">
         <header className="mb-8 md:mb-0">
-          <h1 className="text-3xl font-bold dark:text-white">Goals</h1>
+          <h1 className="text-3xl font-bold dark:text-white">Financial Goals</h1>
           <p className="text-muted-foreground dark:text-white/50">
             Set and track your financial goals.
           </p>
@@ -200,6 +206,19 @@ const Goals = () => {
         <Button size="lg" className="border-2" onClick={handleAddGoal}>
           Add New Goal
         </Button>
+      </div>
+
+      {/* Overview Section */}
+      <div className="mb-8">
+        <h2 className="text-2xl font-semibold dark:text-white">Your Financial Goals</h2>
+        <p className="text-muted-foreground dark:text-white/50">
+          "The journey of a thousand miles begins with one step." - Lao Tzu
+        </p>
+        <div className="flex justify-between items-center mt-4">
+          <div className="dark:text-white">Total Goals: {goals.length}</div>
+          <div className="dark:text-white">In Progress: {goals.filter(goal => goal.currentAmount < goal.targetAmount).length}</div>
+          <div className="dark:text-white">Completed: {goals.filter(goal => goal.currentAmount >= goal.targetAmount).length}</div>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -240,6 +259,40 @@ const Goals = () => {
           </Card>
         ))}
       </div>
+
+      {/* Goal Impact Analysis Section */}
+      <div className="mt-12">
+        <h2 className="text-2xl font-semibold dark:text-white">Goal Impact Analysis</h2>
+        <div className="mt-4">
+          <p className="dark:text-white">
+            Analyzing the impact of your financial goals on your overall net worth helps you stay on track and make informed decisions.
+          </p>
+          <div className="mt-6">
+            <h3 className="text-xl font-semibold dark:text-white">Net Worth Impact Graph</h3>
+            <div className="h-48 bg-gray-200 rounded-md dark:bg-gray-800"></div>
+          </div>
+          <div className="mt-6">
+            <h3 className="text-xl font-semibold dark:text-white">Progress over Time</h3>
+            <div className="h-48 bg-gray-200 rounded-md dark:bg-gray-800"></div>
+          </div>
+          <p className="mt-4 dark:text-white">
+            Summary: Achieving your goals will positively impact your net worth by reducing liabilities and increasing savings.
+          </p>
+        </div>
+      </div>
+
+      {/* Notifications and Alerts */}
+      <div className="mt-12">
+        <h2 className="text-2xl font-semibold dark:text-white">Notifications and Alerts</h2>
+        <div className="mt-4">
+          <ul>
+            <li className="dark:text-white">Your goal "Emergency Fund" is 30% away from completion.</li>
+            <li className="dark:text-white">Reminder: Your goal "Vacation" is due on 2024-08-01.</li>
+          </ul>
+        </div>
+      </div>
+
+   
 
       {selectedGoal && (
         <Dialog
