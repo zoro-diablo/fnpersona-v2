@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { TrendingUp } from 'lucide-react';
 import {
   Card,
@@ -16,14 +15,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
 
-const chartConfig = {
-  desktop: {
-    label: 'Desktop',
-    color: 'hsl(var(--chart-1))',
-  },
-};
 
 const netWorthData = [
   { name: 'Jan', netWorth: 15000 },

@@ -1,12 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { FaEllipsisV, FaTrash, FaEdit, FaEye } from 'react-icons/fa';
 import { Label } from '@/components/ui/label';
@@ -20,7 +14,8 @@ import {
 } from '@/components/ui/dropdown-menu';
 import NetWorthImpactChart from '@/components/graph/client/NetWorthImpactChart';
 import ProgressOverTimeChart from '@/components/graph/client/ProgressOverTimeChart';
-import { Check, GoalIcon, Loader, SquareCheck, Touchpad, Upload } from 'lucide-react';
+import { Check, GoalIcon, Loader } from 'lucide-react';
+import NotificationAlert from '@/components/goals/NotificationAlert';
 
 const Goals = () => {
   const initialGoals = [
@@ -49,6 +44,8 @@ const Goals = () => {
   const [viewingContributionsGoal, setViewingContributionsGoal] =
     useState(null);
   const [goalToDelete, setGoalToDelete] = useState(null);
+
+
 
   const handleAddGoal = () => {
     setSelectedGoal({
@@ -88,7 +85,6 @@ const Goals = () => {
     setSelectedGoal(null);
   };
 
-  // Add a contribution to a goal
   const handleContribution = (goalId, amount) => {
     setGoals(
       goals.map((goal) => {
@@ -262,6 +258,8 @@ const Goals = () => {
     { date: '2024-06', netWorth: 12000 },
   ];
 
+
+
   return (
     <div className='container mt-6 py-8 px-4 md:px-6'>
       <div className='mb-8 flex flex-col md:flex-row justify-between items-center'>
@@ -427,21 +425,7 @@ const Goals = () => {
       </div>
 
       {/* Notifications and Alerts */}
-      <div className='mt-12'>
-        <h2 className='text-2xl font-semibold dark:text-white'>
-          Notifications and Alerts
-        </h2>
-        <div className='mt-4'>
-          <ul>
-            <li className='dark:text-white'>
-              Your goal "Emergency Fund" is 30% away from completion.
-            </li>
-            <li className='dark:text-white'>
-              Reminder: Your goal "Vacation" is due on 2024-08-01.
-            </li>
-          </ul>
-        </div>
-      </div>
+      <NotificationAlert />
 
       {selectedGoal && (
         <Dialog

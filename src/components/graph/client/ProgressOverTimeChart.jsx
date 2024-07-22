@@ -5,7 +5,6 @@ import {
   Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
 } from 'recharts';
 import {
     Card,
