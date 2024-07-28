@@ -290,10 +290,10 @@ const Goals = () => {
             x-chunk='charts-01-chunk-6'
           >
             <CardHeader className=''>
-              <CardTitle className=''>Total Goals </CardTitle>
+              <CardTitle className='text-lg'>Total Goals </CardTitle>
             </CardHeader>
             <CardContent className=' gap-4 p-4 pt-2'>
-              <div className='flex  items-center gap-2 text-3xl font-bold tabular-nums leading-none'>
+              <div className='flex  items-center gap-2 text-2xl font-bold tabular-nums leading-none'>
                 {goals.length}
                 <span className='text-sm font-normal text-muted-foreground flex items-center'>
                   <GoalIcon />
@@ -306,10 +306,10 @@ const Goals = () => {
             x-chunk='charts-01-chunk-6'
           >
             <CardHeader className=''>
-              <CardTitle className=''> In Progress </CardTitle>
+              <CardTitle className='text-lg'> In Progress </CardTitle>
             </CardHeader>
             <CardContent className=' gap-4 p-4 pt-2'>
-              <div className='flex  items-center gap-2 text-3xl font-bold tabular-nums leading-none'>
+              <div className='flex  items-center gap-2 text-2xl font-bold tabular-nums leading-none'>
                 {
                   goals.filter((goal) => goal.currentAmount < goal.targetAmount)
                     .length
@@ -325,10 +325,10 @@ const Goals = () => {
             x-chunk='charts-01-chunk-6'
           >
             <CardHeader className=''>
-              <CardTitle className=''> Completed </CardTitle>
+              <CardTitle className='text-lg'> Completed </CardTitle>
             </CardHeader>
             <CardContent className=' gap-4 p-4 pt-2'>
-              <div className='flex  items-center gap-2 text-3xl font-bold tabular-nums leading-none'>
+              <div className='flex  items-center gap-2 text-2xl font-bold tabular-nums leading-none'>
                 {
                   goals.filter(
                     (goal) => goal.currentAmount >= goal.targetAmount

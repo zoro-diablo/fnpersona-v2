@@ -1,13 +1,8 @@
 import { NavLink } from 'react-router-dom';
 import {
   Home,
-  ShoppingCart,
-  Package,
-  Users2,
-  LineChart,
   Settings,
   GoalIcon,
-  CoinsIcon,
   DollarSign,
   Wallet,
   Calendar,
@@ -22,6 +17,13 @@ import {
 } from '@/components/ui/tooltip';
 import logo from '../../assets/logo.svg';
 import { GrTransaction } from 'react-icons/gr';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 function Sidebar() {
   return (
@@ -45,14 +47,15 @@ function Sidebar() {
                 to='/dashboard/lobby'
                 className='flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'
               >
-                <Home className='h-5 w-5  activebutton' />
+                <Home className='h-5 w-5 activebutton' />
                 <span className='sr-only'>Dashboard</span>
               </NavLink>
             </TooltipTrigger>
             <TooltipContent side='right'>Dashboard</TooltipContent>
           </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
               <NavLink
                 to='/dashboard/budget'
                 className='flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'
@@ -60,9 +63,29 @@ function Sidebar() {
                 <DollarSign className='h-5 w-5 activebutton' />
                 <span className='sr-only'>Budget</span>
               </NavLink>
-            </TooltipTrigger>
-            <TooltipContent side='right'>Budget</TooltipContent>
-          </Tooltip>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className='w-56 ml-14 mt-[-35px]'>
+              <DropdownMenuGroup>
+                <DropdownMenuItem asChild>
+                  <NavLink
+                    to='/dashboard/budget/addbudget'
+                    className='flex items-center px-2 py-2 text-sm dark:text-gray-100 dark:hover:bg-gray-700'
+                  >
+                    Add Budget
+                  </NavLink>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <NavLink
+                    to='/dashboard/budget/overview'
+                    className='flex items-center px-2 py-2 text-sm dark:text-gray-100 dark:hover:bg-gray-700'
+                  >
+                    Overview Budget
+                  </NavLink>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
           <Tooltip>
             <TooltipTrigger asChild>
               <NavLink
@@ -75,6 +98,7 @@ function Sidebar() {
             </TooltipTrigger>
             <TooltipContent side='right'>Transactions</TooltipContent>
           </Tooltip>
+
           <Tooltip>
             <TooltipTrigger asChild>
               <NavLink
@@ -113,6 +137,7 @@ function Sidebar() {
             </TooltipTrigger>
             <TooltipContent side='right'>RetirementPlanner</TooltipContent>
           </Tooltip>
+
           <Tooltip>
             <TooltipTrigger asChild>
               <NavLink
@@ -125,13 +150,14 @@ function Sidebar() {
             </TooltipTrigger>
             <TooltipContent side='right'>Investments</TooltipContent>
           </Tooltip>
+
           <Tooltip>
             <TooltipTrigger asChild>
               <NavLink
                 to='/dashboard/networth'
                 className='flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8'
               >
-                <Wallet className='h-5 w-5  activebutton' />
+                <Wallet className='h-5 w-5 activebutton' />
                 <span className='sr-only'>Net Worth</span>
               </NavLink>
             </TooltipTrigger>
